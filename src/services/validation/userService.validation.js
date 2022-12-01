@@ -1,4 +1,5 @@
 const { BAD_REQUEST } = require('../../utils/errors');
+/* const service = require('../user.services'); */
 
 const userDataValidation = (user, password) => {
     if (!user) {
@@ -10,6 +11,15 @@ const userDataValidation = (user, password) => {
     return { type: null, message: '' };
 };
 
+const newUserValidation = async (allUser, email) => {
+    const ifEmailAlreadyExists = allUser.some((user) => user.email === email);
+    if (ifEmailAlreadyExists) {
+        return { type: BAD_REQUEST, message: 'User already registered' };
+    }
+    return { type: null, message: '' };
+};
+
 module.exports = {
     userDataValidation,
+    newUserValidation,
 };
