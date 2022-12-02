@@ -1,4 +1,4 @@
-const { BAD_REQUEST, CONFLICT } = require('../../utils/errors');
+const { BAD_REQUEST, CONFLICT, NOT_FOUND } = require('../../utils/errors');
 /* const service = require('../user.services'); */
 
 const userDataValidation = (user, password) => {
@@ -19,7 +19,15 @@ const newUserValidation = async (allUser, email) => {
     return { type: null, message: '' };
 };
 
+const checkIfUserExists = (user) => {
+    if (!user) {
+        return { type: NOT_FOUND, message: 'User does not exist' };
+    }
+    return { type: null, message: '' };
+};
+
 module.exports = {
     userDataValidation,
     newUserValidation,
+    checkIfUserExists,
 };

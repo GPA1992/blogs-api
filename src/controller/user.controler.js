@@ -58,8 +58,20 @@ const getAlluser = async (_req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { type, message } = await userService.getByUserIdWhitoutPassword(id);
+    if (type) return res.status(type).json({ message });
+    return res.status(OK).json(message);
+  } catch (err) {
+    return res.status(INTERNAL_SERVER_ERROR).json({ message: 'Erro interno', error: err.message });
+  }
+};
+
 module.exports = {
     loginValidation,
     addNewUser,
     getAlluser,
+    getUserById,
 };

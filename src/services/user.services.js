@@ -16,6 +16,13 @@ const getByUserId = async (userId) => {
   return user;
 };
 
+const getByUserIdWhitoutPassword = async (userId) => {
+  const user = await User.findByPk(userId, { attributes: { exclude: ['password'] } });
+  const userValidation = validation.checkIfUserExists(user);
+  if (userValidation.type) return userValidation;
+  return { type: null, message: user };
+};
+
 const createUser = async (newUser, email) => {
   const allusers = await User.findAll();
   const userValidation = await validation.newUserValidation(allusers, email);
@@ -31,4 +38,5 @@ const getUSers = () => User.findAll({ attributes: { exclude: ['password'] } });
     getByUserId,
     createUser,
     getUSers,
+    getByUserIdWhitoutPassword,
   };
