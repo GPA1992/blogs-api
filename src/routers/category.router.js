@@ -7,5 +7,5 @@ const validateJWT = require('../auth/validateJWT');
 const router = express.Router();
 
 router.post('/', validateJWT, categoryValidation.categoryFieldsValidation, category.createCategory);
-
+router.get('/', validateJWT, category.allCategory);
 module.exports = router;
