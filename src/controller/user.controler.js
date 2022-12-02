@@ -1,6 +1,7 @@
 require('dotenv/config');
 const jwt = require('jsonwebtoken');
 const { userService } = require('../services');
+const { OK, CREATED, INTERNAL_SERVER_ERROR } = require('../utils/errors');
 
 const secret = process.env.JWT_SECRET || 'seusecretdetoken';
 
@@ -18,9 +19,10 @@ const loginValidation = async (req, res) => {
       };
     
     const token = jwt.sign({ data: { userId: message.id } }, secret, jwtConfig);
-    return res.status(200).json({ token });
+    return res.status(OK).json({ token });
     } catch (err) {
-      return res.status(500).json({ message: 'Erro interno', error: err.message });
+      return res.status(INTERNAL_SERVER_ERROR).json({ 
+        message: 'Erro interno', error: err.message });
     }
 };
 
@@ -41,13 +43,23 @@ const addNewUser = async (req, res) => {
 
   const token = jwt.sign({ data: { userId: message.id } }, secret, jwtConfig);
 
-    return res.status(201).json({ token });
+    return res.status(CREATED).json({ token });
   } catch (err) {
-    return res.status(500).json({ message: 'Erro interno', error: err.message });
+    return res.status(INTERNAL_SERVER_ERROR).json({ message: 'Erro interno', error: err.message });
+  }
+};
+
+const getAlluser = async (_req, res) => {
+  try {
+    const users = await userService.getUSers();
+    return res.status(OK).json(users);
+  } catch (err) {
+    return res.status(INTERNAL_SERVER_ERROR).json({ message: 'Erro interno', error: err.message });
   }
 };
 
 module.exports = {
     loginValidation,
     addNewUser,
+    getAlluser,
 };
