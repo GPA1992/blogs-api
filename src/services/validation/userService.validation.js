@@ -1,4 +1,4 @@
-const { BAD_REQUEST } = require('../../utils/errors');
+const { BAD_REQUEST, CONFLICT } = require('../../utils/errors');
 /* const service = require('../user.services'); */
 
 const userDataValidation = (user, password) => {
@@ -14,7 +14,7 @@ const userDataValidation = (user, password) => {
 const newUserValidation = async (allUser, email) => {
     const ifEmailAlreadyExists = allUser.some((user) => user.email === email);
     if (ifEmailAlreadyExists) {
-        return { type: BAD_REQUEST, message: 'User already registered' };
+        return { type: CONFLICT, message: 'User already registered' };
     }
     return { type: null, message: '' };
 };

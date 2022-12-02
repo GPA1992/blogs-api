@@ -1,8 +1,6 @@
 const jwt = require('jsonwebtoken');
-
+const { User } = require('../models');
 require('dotenv/config');
-
-/* const { UserService } = require('../services'); */
 
 const secret = process.env.JWT_SECRET || 'seusecretdetoken';
 
@@ -13,12 +11,8 @@ if (!token) {
 }
   try {
     const decoded = jwt.verify(token, secret);
-  
-    if (!decoded) {
-      return res.status(401).json({ message: 'Erro ao procurar usuário do token.' });
-    }
-
-    req.user = decoded;
+    const user = await User.findByPk(decoded.data.userId);
+    req.user = user;
 
     return next();
   } catch (err) {
