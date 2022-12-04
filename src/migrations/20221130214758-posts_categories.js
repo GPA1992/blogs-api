@@ -15,7 +15,7 @@ module.exports = {
           key: 'id',
         },
       },
-      category_id: {
+      categoryId: {
         allowNull: false,
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
