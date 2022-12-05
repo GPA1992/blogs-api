@@ -31,7 +31,20 @@ const allPosts = async (req, res) => {
   }  
 };
 
+const postById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { type, message } = await blogPost.postById(id);
+        if (type) res.status(type).json({ message });
+        return res.status(OK).json(message);
+    } catch (err) {
+      return res.status(INTERNAL_SERVER_ERROR).json({ 
+          message: 'Erro interno', error: err.message });
+    }  
+  };
+
 module.exports = {
     newPost,
     allPosts,
+    postById,
 };
