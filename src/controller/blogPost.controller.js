@@ -43,8 +43,23 @@ const postById = async (req, res) => {
     }  
   };
 
+const editPostById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, content } = req.body;
+        await blogPost.editPostById(id, title, content);
+        const { type, message } = await blogPost.postById(id);
+        if (type) res.status(type).json({ message });
+        return res.status(OK).json(message);
+    } catch (err) {
+        return res.status(INTERNAL_SERVER_ERROR).json({ 
+            message: 'Erro interno', error: err.message });
+    }
+};
+
 module.exports = {
     newPost,
     allPosts,
     postById,
+    editPostById,
 };

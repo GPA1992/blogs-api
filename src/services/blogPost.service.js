@@ -64,8 +64,16 @@ const postById = async (postId) => {
     if (postValidation.type) return postValidation;
     return { type: null, message: post };
    };
+ 
+const editPostById = async (id, title, content) => {
+    const post = await BlogPost.update({ title, content }, { where: { id } });
+    
+     return { type: null, message: post };
+};   
+
 module.exports = {
     addNewPost,
     allPosts,
     postById,
+    editPostById,
 };
