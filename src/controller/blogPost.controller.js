@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { blogPost } = require('../services');
 
-const { CREATED, INTERNAL_SERVER_ERROR } = require('../utils/errors');
+const { CREATED, INTERNAL_SERVER_ERROR, OK } = require('../utils/errors');
 
 const secret = process.env.JWT_SECRET || 'seusecretdetoken';
 
@@ -21,6 +21,17 @@ try {
 }
 };
 
+const allPosts = async (req, res) => {
+  try {
+      const posts = await blogPost.allPosts();
+      return res.status(OK).json(posts);
+  } catch (err) {
+    return res.status(INTERNAL_SERVER_ERROR).json({ 
+        message: 'Erro interno', error: err.message });
+  }  
+};
+
 module.exports = {
     newPost,
+    allPosts,
 };
