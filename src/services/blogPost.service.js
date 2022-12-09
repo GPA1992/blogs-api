@@ -30,10 +30,11 @@ const addNewPost = async (title, content, categoryIds, userId) => {
 };
 
 const allPosts = () => {
- const post = BlogPost.findAll({ 
-    include: [
-        { 
-            model: User,
+try {
+    const post = BlogPost.findAll({ 
+        include: [
+            { 
+                model: User,
             as: 'user',
             attributes: { exclude: ['password'] },
         },
@@ -42,39 +43,64 @@ const allPosts = () => {
             as: 'categories',
         },
     ] });
-
+    
     return post;
+} catch (err) {
+    console.log(err);
+    throw err;
+}
 };
 
 const postById = async (postId) => {
-    const post = await BlogPost.findOne({ 
-       include: [
-           { 
-               model: User,
-               as: 'user',
-               attributes: { exclude: ['password'] },
-               where: { id: postId },
-           },
-           { 
-               model: Category,
-               as: 'categories',
-           },
-       ] });
-   
-    const postValidation = await validation.blogPostValidation(post);
-    if (postValidation.type) return postValidation;
-    return { type: null, message: post };
+    try {
+        const post = await BlogPost.findOne({ 
+            include: [{ 
+                    model: User,
+                    as: 'user',
+                    attributes: { exclude: ['password'] },
+                    where: { id: postId },
+                },
+                { model: Category,
+                    as: 'categories' }],
+                });
+            const postValidation = await validation.blogPostValidation(post);
+            if (postValidation.type) return postValidation;
+           return { type: null, message: post };
+    } catch (err) {
+            console.log(err);
+            throw err;
+    }
    };
  
 const editPostById = async (id, title, content) => {
+    try {
     const post = await BlogPost.update({ title, content }, { where: { id } });
     
      return { type: null, message: post };
-};   
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};  
+
+const deletePostById = async (id, user) => {
+    try {
+    const post = await BlogPost.findOne({ where: { id } });    
+    console.log(post);
+    const postValidation = await validation.userValidation(post, user);
+    if (postValidation.type) return postValidation;
+    await BlogPost.destroy({ where: { id } });    
+    return { type: null, message: '' };
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
 
 module.exports = {
     addNewPost,
     allPosts,
     postById,
     editPostById,
+    deletePostById,
 };

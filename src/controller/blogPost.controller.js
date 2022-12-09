@@ -61,7 +61,8 @@ const editPostById = async (req, res) => {
 const deletePostById = async (req, res) => {
     try {
         const { id } = req.params;
-        const { type, message } = await blogPost.deletePostById(id);
+        const { user } = req;
+        const { type, message } = await blogPost.deletePostById(id, user);
         if (type) return res.status(type).json({ message });
         return res.status(NO_CONTENT).json();
     } catch (err) {
