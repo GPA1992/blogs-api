@@ -36,7 +36,7 @@ const postById = async (req, res) => {
     try {
         const { id } = req.params;
         const { type, message } = await blogPost.postById(id);
-        if (type) res.status(type).json({ message });
+        if (type) return res.status(type).json({ message });
         return res.status(OK).json(message);
     } catch (err) {
       return res.status(INTERNAL_SERVER_ERROR).json({ 
@@ -62,7 +62,7 @@ const deletePostById = async (req, res) => {
     try {
         const { id } = req.params;
         const { type, message } = await blogPost.deletePostById(id);
-        if (type) res.status(type).json({ message });
+        if (type) return res.status(type).json({ message });
         return res.status(NO_CONTENT).json();
     } catch (err) {
         return res.status(INTERNAL_SERVER_ERROR).json({ 
