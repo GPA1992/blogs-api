@@ -1,15 +1,19 @@
 const jwt = require('jsonwebtoken');
-const { BAD_REQUEST } = require('../utils/errors');
+const { BAD_REQUEST, INTERNAL_ERROR, INTERNAL_SERVER_ERROR } = require('../utils/errors');
 require('dotenv/config');
 
 const secret = process.env.JWT_SECRET || 'seusecretdetoken';
 
 const blogPostFieldsValidation = (req, res, next) => {
+  try {
     const { title, content } = req.body;
     if (!title || !content) {
-        return res.status(BAD_REQUEST).json({ message: 'Some required fields are missing' });
+      return res.status(BAD_REQUEST).json({ message: 'Some required fields are missing' });
     }
     return next();
+  } catch (err) {
+    return res.status(INTERNAL_SERVER_ERROR).json({ message: INTERNAL_ERROR, error: err.message });
+  }
 };
 
 const validateUser = async (req, res, next) => {
