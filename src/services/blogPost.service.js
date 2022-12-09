@@ -2,12 +2,13 @@ const Sequelize = require('sequelize');
 const config = require('../config/config');
 const { BlogPost, PostCategory, User, Category } = require('../models');
 const validation = require('./validation/blogPostService.validation');
+const categoryValidation = require('./validation/categoriesService.validation');
 
 const env = process.env.NODE_ENV || 'development';
 const sequelize = new Sequelize(config[env]);
 
 const addNewPost = async (title, content, categoryIds, userId) => {
-    const categoriesValidation = await validation.categoriesValidation(categoryIds);
+    const categoriesValidation = await categoryValidation.categoriesValidation(categoryIds);
     if (categoriesValidation.type) return categoriesValidation;
     try {
         const result = await sequelize.transaction(async (t) => {

@@ -14,5 +14,5 @@ validateJWT,
 blogPostValidation.validateUser,
 blogPostValidation.blogPostFieldsValidation,
 blogPost.editPostById);
-
+/* router.delete('/:id', validateJWT, blogPostValidation.validateUser, blogPost.deletePostById); */
 module.exports = router;
