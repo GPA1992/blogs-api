@@ -71,10 +71,18 @@ const deletePostById = async (req, res) => {
     }
 };
 
+const serchPost = async (req, res) => {
+    const { q } = req.query;
+    const post = await blogPost.searchPost(q);
+    if (!post) return res.status(OK).json([]);
+    return res.status(OK).json(post);
+  };
+
 module.exports = {
     newPost,
     allPosts,
     postById,
     editPostById,
     deletePostById,
+    serchPost,
 };
