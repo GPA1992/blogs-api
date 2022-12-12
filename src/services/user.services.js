@@ -33,10 +33,16 @@ const createUser = async (newUser, email) => {
 
 const getUSers = () => User.findAll({ attributes: { exclude: ['password'] } });
 
+const deleteMainUser = async (userId) => {
+  await User.destroy({ where: { id: userId } });  
+  return { type: null, message: '' };
+};
+
   module.exports = {
     getByEmail,
     getByUserId,
     createUser,
     getUSers,
     getByUserIdWhitoutPassword,
+    deleteMainUser,
   };

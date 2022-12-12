@@ -13,6 +13,7 @@ module.exports = async (req, res, next) => {
       }
   
     const decoded = jwt.verify(token, secret);
+    
     const user = await User.findByPk(decoded.data.userId);
 
     req.user = user;
