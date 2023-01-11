@@ -23,11 +23,4 @@ O objetivo desse projeto era aplicar o conceito de arquitetura de software MSC (
 9. Para criar o banco e gerar as tabelas, use o comando: "prestart": "npx sequelize-cli db:create && npx sequelize-cli db:migrate"
 10. Para inserir dados/popular a tabela, use o comando: "seed": "npx sequelize-cli db:seed:all"
 
-## Documentação da API
-A documentação da API está disponível no endereço `http://localhost:3000/api-docs/`
 
-## Contribuição
-
-Sinta-se à vontade para fazer pull requests e contribuir com o projeto. Algumas áreas que sempre precisam de ajuda são:
-
-- Adição de novas funcional
